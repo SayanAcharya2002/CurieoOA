@@ -16,6 +16,8 @@ This ensures O(logn) search time for each query. On top of that, to find the cor
 
 This too makes sure that the time complexity remains O(logn) for each query. [n=number of logs]
 
+Space complexity of this solution is O(nlogn) as the sparse table has to be stored.
+
 If queries are made when no logs are available then (0.0,0.0,0.0) is returned.
 
 Instructions to run:
