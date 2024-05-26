@@ -35,5 +35,5 @@ docker build -t app .
 ```
 The docker solution can be run with 
 ```
-docker build -t app . 
+docker run app 
 ```
