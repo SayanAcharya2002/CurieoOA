@@ -32,7 +32,7 @@ Space complexity of this solution is O(nlogn) as the sparse table has to be stor
       1. timeStamps: This list stores all the timestamps of the given log type. It is used for finding out the effective query indices of the before and after type query
       2. globalAns: This QueryTuple holds the min,max,sum for the whole range. Therefore, for "2 logtype" queries the answers can be given instantly without requiring any range search operation
       3. bitwiseArrays: This is a list of lists that is simply the sparse table. This 2d matrix is of the size number_of_bits x number_of_elements. The number of bits is log(number of elements). It increases in size depending on the number of elements inserted. The idea is that the number of bits will be such that 2**number_of_bits > number_of_elements. This way, ranges of length 2\**k can be searched effectively. With each new entry, corresponding array entries are calculated such that the new whole range is covered. Each entry only changes the number of rows in the bitwiseArrays by a maximum of 1 time.
-  2. Methods:
+   2. Methods:
       1. addEntry: This function adds an entry to the sparsetable, timeStamps array, and updates the globalAns.
       2. getWholeRange: Returns the ans to the "2 logtype" query
       3. __query_internal_range: This is an internal functions supposed to be used as the range query function. For the min/max, it simply uses the overlapping range combination technique that is famously used in sparse tables. For the summation, it starts adding segments until the full length is reached. This technique is taken from the famous Binary Lifting technique. The whole complexity of this process is O(logN). [N= number of entries in the QueryHandler {worst case: total number of queries}]
