@@ -18,11 +18,12 @@ If queries are made when no logs are available then (0.0,0.0,0.0) is returned.
    For each logtype a QueryHandler object is kept that is used to answer queries of that logtype. A python dict is utilized for this feature. Other than this, a global QueryHandler object is kept that stores the information of all the logs. This helps to answer queries of type 3. 
 
 ## Complexity classes
-This ensures O(logn) search time for each query. On top of that, to find the correct range, upperbound and lowerbound functions are applied on the timestamps array.
+1. Time Complexity
+   1. To service each query of type 3 and 4, upperbound or lowerbound functions are applied on the timestamps array which requires O(logn) time. Then calculation of the min/max requires O(1) time and mean calculation requires O(logn) time. Therefore, in total it requires O(logn) time. [n=number of entries of that logtype {worst case: total number of queries}]
+   2. To service query 2, it gives the pre-compiled globalAns value. Therefore, takes O(1) time.
+   3. To service query 1, it has to add the entry to the table which requires setting up the sparsetable correctly. Therefore, a total of logn entries need to be entered in the full table. This takes O(logn) time. [n=number of entries of that logtype {worst case: total number of queries}]
 
-This too makes sure that the time complexity remains O(logn) for each query. [n=number of logs]
-
-Space complexity of this solution is O(nlogn) as the sparse table has to be stored.
+2. Space complexity: The space complexity of this solution is O(nlogn) as the sparse table has to be stored which has logn lists each having a maximum of n entries. [n=number of entries of that logtype {worst case: total number of queries}]
 
 
 ## Brief overview of the classes and functions
