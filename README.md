@@ -1,5 +1,5 @@
 # CurieoOA
-The solution works by extending the idea of a sparse table. 
+The solution works by extending the idea of a sparse table. It is a fully online solution that serves the queries as they come without making any extra assumptions about the length of the queries, the maximum number of queries, or the number of timestamps. Although, a sparse table is generally considered a fixed data structure, here it is modified to be able to add new entries at the back of the table, making the whole data structure online. On top of that, the queries are run iteratively. Therefore, no extra recursive overhead is applied. So the number of operations done and the total runtime are very optimized.
 
 As the updates are only of appending type and no changes are made to the past data, we can use a modified sparse table for this. 
 
@@ -19,6 +19,20 @@ This too makes sure that the time complexity remains O(logn) for each query. [n=
 Space complexity of this solution is O(nlogn) as the sparse table has to be stored.
 
 If queries are made when no logs are available then (0.0,0.0,0.0) is returned.
+
+## Brief overview of the classes and functions
+1. QueryTuple: It is a custom made dataclass that holds the min, max, sum values for the ranges. It has a combine function to combine the results with other QueryTuple objects and a str representation for formatted output
+2. QueryHandler: This class handles the queries and saves the log information in the form of a sparse table. Each QueryHandler class stores the information of a specific log type.
+   1. Data members:
+      1. timeStamps: This list stores all the timestamps of the given log type. It is used for finding out the effective query indices of the before and after type query
+      2. globalAns: This QueryTuple holds the min,max,sum for the whole range. Therefore, for "2 logtype" queries the answers can be given instantly without requiring any range search operation
+      3. bitwiseArrays: This is a list of lists that is simply the sparse table. This 2d matrix is of the size number_of_bits x number_of_elements. The number of bits is log(number of elements). It increases in size depending on the number of elements inserted. The idea is that the number of bits will be such that 2**number_of_bits > number_of_elements. This way, ranges of length 2\**k can be searched effectively. With each new entry, corresponding array entries are calculated such that the new whole range is covered. Each entry only changes the number of rows in the bitwiseArrays by a maximum of 1 time.
+  2. Methods:
+    1. addEntry: This function adds an entry to the sparsetable, timeStamps array, and updates the globalAns. 
+    2. getWholeRange: Returns the ans to the "2 logtype" query
+    3. __query_internal_range: This is an internal functions supposed to be used as the range query function. For the min/max, it simply uses the overlapping range combination technique that is famously used in sparse tables. For the summation, it starts adding segments until the full length is reached. This technique is taken from the famous Binary Lifting technique. The whole complexity of this process is O(logN). [N= number of entries in the QueryHandler {worst case: total number of queries}]
+    4. queryBefore: It calculates the valid range to query given a timestamp t. The valid range is the range of timestamps that comes before the timestamp t. It uses lowerbound function's idea internally. Therefore, it can handle multiple entries at the same timestamp. When no valid range is found, it returns the default (0.0,0.0,0.0) value.
+    5. queryAfter: It calculates the valid range to query given a timestamp t. The valid range is the range of timestamps that comes after the timestamp t. It uses upperbound function's idea internally. Therefore, it can handle multiple entries at the same timestamp. When no valid range is found, it returns the default (0.0,0.0,0.0) value.
 
 Instructions to run:
 ```
