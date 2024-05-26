@@ -12,13 +12,15 @@ l=[1] will only require 1 bit, l=[1,2] will require 2 bits, l=[1,2,3] 2 bits, l=
 
 Afterwards, for min/max simple, sparse table queries are made and for summation, binary lifting technique is used on sparse table. 
 
+If queries are made when no logs are available then (0.0,0.0,0.0) is returned.
+
+## Complexity classes
 This ensures O(logn) search time for each query. On top of that, to find the correct range, upperbound and lowerbound functions are applied on the timestamps array.
 
 This too makes sure that the time complexity remains O(logn) for each query. [n=number of logs]
 
 Space complexity of this solution is O(nlogn) as the sparse table has to be stored.
 
-If queries are made when no logs are available then (0.0,0.0,0.0) is returned.
 
 ## Brief overview of the classes and functions
 1. QueryTuple: It is a custom made dataclass that holds the min, max, sum values for the ranges. It has a combine function to combine the results with other QueryTuple objects and a str representation for formatted output
