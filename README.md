@@ -14,6 +14,9 @@ Afterwards, for min/max simple, sparse table queries are made and for summation,
 
 If queries are made when no logs are available then (0.0,0.0,0.0) is returned.
 
+## Working idea
+   For each logtype a QueryHandler object is kept that is used to answer queries of that logtype. A python dict is utilized for this feature. Other than this, a global QueryHandler object is kept that stores the information of all the logs. This helps to answer queries of type 3. 
+
 ## Complexity classes
 This ensures O(logn) search time for each query. On top of that, to find the correct range, upperbound and lowerbound functions are applied on the timestamps array.
 
